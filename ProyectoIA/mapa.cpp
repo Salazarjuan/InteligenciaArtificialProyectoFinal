@@ -23,3 +23,36 @@ Mapa::~Mapa()
 {
     delete ui;
 }
+
+void Mapa::on_abrir_btn_clicked()
+{
+    int mapa[12][12];
+        int municion = 0;
+
+        for(int i = 0; i < 12; i++){
+            for(int j = 0; j < 12; j++){
+                mapa[i][j] = 1;
+            }
+        }
+
+        std::string ruta = QFileDialog::getOpenFileName(this,tr("Open File"),"C:/Users/juanjose/Desktop/",
+                                                   tr("text (*.txt)")).toStdString();
+
+        ifstream imputFile(ruta);
+        imputFile >> municion;
+
+        for(int i = 1; i < 11; i++){
+            for(int j = 1; j < 11; j++){
+                imputFile >> mapa[i][j];
+            }
+        }
+
+        //cout << municion << endl;
+
+        for(int i = 0; i < 12; i++){
+            for(int j = 0; j < 12; j++){
+                cout << mapa[i][j] << " ";
+            }
+            cout << endl;
+        }
+}
