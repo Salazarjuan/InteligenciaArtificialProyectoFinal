@@ -16,6 +16,9 @@ public:
     explicit Mapa(QWidget *parent = 0);
     ~Mapa();
 
+private slots:
+    void on_abrir_btn_clicked();
+
 private:
     Ui::Mapa *ui;
 };
