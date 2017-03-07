@@ -5,6 +5,11 @@
 #include <QLabel>
 #include <vector>
 #include "nodo.h"
+#include <QFileDialog>
+#include <fstream>
+#include <iostream>
+
+using namespace std;
 
 namespace Ui {
 class Mapa;
@@ -20,13 +25,14 @@ public:
     int mapa[12][12];
     int posI;
     int posJ;
-    std::vector<Nodo> nodosCreados;
-    std::vector<Nodo> amplitud;
+    int municion;
     void busquedaPorAmplitud();
     void posicionActual();
 
 private slots:
     void on_abrir_btn_clicked();
+
+    void on_buscarSolucion_btn_clicked();
 
 private:
     Ui::Mapa *ui;

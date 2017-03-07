@@ -1,6 +1,7 @@
 #include "mapa.h"
 #include "ui_mapa.h"
 
+
 Mapa::Mapa(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Mapa)
@@ -17,8 +18,9 @@ Mapa::Mapa(QWidget *parent) :
         }
     }
 
-    nodosCreados.resize(0);
-    amplitud.resize(0);
+    municion = 0;
+    posI = 0;
+    posJ = 0;
 
 }
 
@@ -29,7 +31,6 @@ Mapa::~Mapa()
 
 void Mapa::on_abrir_btn_clicked()
 {
-    int municion = 0;
 
     for(int i = 0; i < 12; i++){
         for(int j = 0; j < 12; j++){
@@ -57,10 +58,13 @@ void Mapa::on_abrir_btn_clicked()
         }
         cout << endl;
     }
+
+    posicionActual();
 }
 
 void Mapa::busquedaPorAmplitud(){
-
+    Nodo * nodo = new Nodo();
+    nodo->expandir(posI, posJ, municion, mapa);
 }
 
 void Mapa::posicionActual()
@@ -76,33 +80,7 @@ void Mapa::posicionActual()
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void Mapa::on_buscarSolucion_btn_clicked()
+{
+    busquedaPorAmplitud();
+}
