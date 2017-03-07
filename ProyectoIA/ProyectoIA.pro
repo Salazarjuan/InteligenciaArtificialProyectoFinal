@@ -13,8 +13,10 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mapa.cpp
+        mapa.cpp \
+    nodo.cpp
 
-HEADERS  += mapa.h
+HEADERS  += mapa.h \
+    nodo.h
 
 FORMS    += mapa.ui
