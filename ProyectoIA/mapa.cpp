@@ -62,11 +62,6 @@ void Mapa::on_abrir_btn_clicked()
     posicionActual();
 }
 
-void Mapa::busquedaPorAmplitud(){
-    Nodo * nodo = new Nodo();
-    nodo->expandir(posI, posJ, municion, mapa);
-}
-
 void Mapa::posicionActual()
 {
     for(int i = 1; i < 11; i++){
@@ -82,5 +77,6 @@ void Mapa::posicionActual()
 
 void Mapa::on_buscarSolucion_btn_clicked()
 {
-    busquedaPorAmplitud();
+    Nodo * nodo = new Nodo();
+    nodo->expandirPorCostoUniformeSD(posI, posJ, municion, mapa);
 }

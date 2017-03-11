@@ -26,7 +26,6 @@ public:
     int posI;
     int posJ;
     int municion;
-    void busquedaPorAmplitud();
     void posicionActual();
 
 private slots:
