@@ -34,6 +34,7 @@ public:
     QGridLayout *gridLayout;
     QWidget *verticalLayoutWidget;
     QVBoxLayout *verticalLayout;
+    QPushButton *abrir_btn;
     QComboBox *busquedas_cb;
     QPushButton *buscarSolucion_btn;
     QMenuBar *menuBar;
@@ -58,12 +59,17 @@ public:
         gridLayout->setContentsMargins(0, 0, 0, 0);
         verticalLayoutWidget = new QWidget(centralWidget);
         verticalLayoutWidget->setObjectName(QStringLiteral("verticalLayoutWidget"));
-        verticalLayoutWidget->setGeometry(QRect(1020, -1, 181, 161));
+        verticalLayoutWidget->setGeometry(QRect(1020, -1, 181, 251));
         verticalLayout = new QVBoxLayout(verticalLayoutWidget);
         verticalLayout->setSpacing(6);
         verticalLayout->setContentsMargins(11, 11, 11, 11);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         verticalLayout->setContentsMargins(0, 0, 0, 0);
+        abrir_btn = new QPushButton(verticalLayoutWidget);
+        abrir_btn->setObjectName(QStringLiteral("abrir_btn"));
+
+        verticalLayout->addWidget(abrir_btn);
+
         busquedas_cb = new QComboBox(verticalLayoutWidget);
         busquedas_cb->setObjectName(QStringLiteral("busquedas_cb"));
 
@@ -94,13 +100,19 @@ public:
     void retranslateUi(QMainWindow *Mapa)
     {
         Mapa->setWindowTitle(QApplication::translate("Mapa", "Mapa", 0));
+        abrir_btn->setText(QApplication::translate("Mapa", "Abrir", 0));
         busquedas_cb->clear();
         busquedas_cb->insertItems(0, QStringList()
-         << QApplication::translate("Mapa", "Preferente por amplitud", 0)
-         << QApplication::translate("Mapa", "Preferente por costo", 0)
-         << QApplication::translate("Mapa", "Preferente por profundidad", 0)
-         << QApplication::translate("Mapa", "A*", 0)
-         << QApplication::translate("Mapa", "B\303\272squeda \303\201vara", 0)
+         << QApplication::translate("Mapa", "Preferente por amplitud SD", 0)
+         << QApplication::translate("Mapa", "Preferente por amplitud CD", 0)
+         << QApplication::translate("Mapa", "Preferente por costo SD", 0)
+         << QApplication::translate("Mapa", "Preferente por costo CD", 0)
+         << QApplication::translate("Mapa", "Preferente por profundidad SD", 0)
+         << QApplication::translate("Mapa", "Preferente por profundidad CD", 0)
+         << QApplication::translate("Mapa", "A* SD", 0)
+         << QApplication::translate("Mapa", "A* CD", 0)
+         << QApplication::translate("Mapa", "B\303\272squeda \303\201vara SD", 0)
+         << QApplication::translate("Mapa", "B\303\272squeda \303\201vara CD", 0)
         );
         buscarSolucion_btn->setText(QApplication::translate("Mapa", "Buscar Soluci\303\263n", 0));
     } // retranslateUi

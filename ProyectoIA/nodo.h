@@ -25,7 +25,10 @@ public:
 
 
     bool esMeta(int valorCasilla);
-    void expandir(int posI, int posJ, int municion, int mapa[12][12]);
+    void expandirPorAmplitudSD(int posI, int posJ, int municion, int mapa[12][12]);
+    void expandirPorAmplitudCD(int posI, int posJ, int municion, int mapa[12][12]);
+    void expandirPorCostoUniformeSD(int posI, int posJ, int municion, int mapa[12][12]);
+    void expandirPorCostoUniformeCD(int posI, int posJ, int municion, int mapa[12][12]);
 
 
 };
@@ -33,3 +36,4 @@ public:
 
 
 #endif // NODO_H
+
