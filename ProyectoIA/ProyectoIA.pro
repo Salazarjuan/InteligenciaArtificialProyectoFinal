@@ -7,7 +7,7 @@
 QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-
+QMAKE_CXXFLAGS += -Wl,--stack,4194304
 TARGET = ProyectoIA
 TEMPLATE = app
 

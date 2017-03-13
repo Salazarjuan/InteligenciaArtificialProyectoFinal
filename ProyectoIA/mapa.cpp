@@ -8,7 +8,7 @@ Mapa::Mapa(QWidget *parent) :
 {
     ui->setupUi(this);
     for (int i = 0; i < 12; i++) {
-        QPixmap imagen("Imagenes/floor.jpg");
+        QPixmap imagen("floor.jpg");
         imagen = imagen.scaled(60,60);
         for (int j = 0; j < 12; j++) {
 
@@ -50,8 +50,6 @@ void Mapa::on_abrir_btn_clicked()
         }
     }
 
-    //cout << municion << endl;
-
     for(int i = 0; i < 12; i++){
         for(int j = 0; j < 12; j++){
             cout << mapa[i][j] << " ";
@@ -78,5 +76,8 @@ void Mapa::posicionActual()
 void Mapa::on_buscarSolucion_btn_clicked()
 {
     Nodo * nodo = new Nodo();
+    //nodo->expandirPorAmplitudSD(posI, posJ, municion, mapa);
     nodo->expandirPorCostoUniformeSD(posI, posJ, municion, mapa);
+    delete nodo;
+    nodo = 0;
 }

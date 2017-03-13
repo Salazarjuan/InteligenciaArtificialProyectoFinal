@@ -20,7 +20,7 @@ public:
     int costo;
     std::string operacion;
     std::vector<Nodo> amplitud;
-
+    bool expandido;
 
 
 
