@@ -76,12 +76,12 @@
        </item>
        <item>
         <property name="text">
-         <string>Preferente por profundidad SD</string>
+         <string>Preferente por profundidad CC</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Preferente por profundidad CD</string>
+         <string>Preferente por profundidad SC</string>
         </property>
        </item>
        <item>

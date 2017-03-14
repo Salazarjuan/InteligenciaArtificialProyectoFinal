@@ -77,7 +77,57 @@ void Mapa::on_buscarSolucion_btn_clicked()
 {
     Nodo * nodo = new Nodo();
     //nodo->expandirPorAmplitudSD(posI, posJ, municion, mapa);
-    nodo->expandirPorCostoUniformeSD(posI, posJ, municion, mapa);
-    delete nodo;
-    nodo = 0;
+
+
+    int id = ui->busquedas_cb->currentIndex();
+
+    switch(id){
+    case 0:
+        cout<<"Buen intento: "<<"Amplitud SD"<<endl;
+        nodo->expandirPorAmplitudSD(posI, posJ, municion, mapa);
+        delete nodo;
+        nodo = 0;
+        break;
+    case 1:
+        cout<<"Buen intento: "<<"Amplitud CD"<<endl;
+        //nodo->expandirPorAmplitudCD(posI, posJ, municion, mapa);
+        delete nodo;
+        nodo = 0;
+        break;
+    case 2:
+        cout<<"Buen intento: "<<"Costo CC"<<endl;
+        nodo->expandirPorCostoUniformeSD(posI, posJ, municion, mapa);
+        delete nodo;
+        nodo = 0;
+        break;
+    case 3:
+        cout<<"Buen intento: "<<"Costo SC"<<endl;
+        //nodo->expandirPorCostoUniformeCD(posI, posJ, municion, mapa);
+        delete nodo;
+        nodo = 0;
+        break;
+    case 4:
+        cout<<"Buen intento: "<<"Profundidad SD"<<endl;
+        nodo->expandirPorPreferenteProfundidadSD(posI, posJ, municion, mapa);
+        delete nodo;
+        nodo = 0;
+        break;
+    case 5:
+        cout<<"Buen intento: "<<"Proundidad CD"<<endl;
+        break;
+    case 6:
+        cout<<"Buen intento"<<"A* SD"<<endl;
+        break;
+    case 7:
+        cout<<"Buen intento"<<"A* CD"<<endl;
+        break;
+    case 8:
+        cout<<"Buen intento"<<"Avara SD"<<endl;
+        break;
+    case 9:
+        cout<<"Buen intento"<<"Avara CD"<<endl;
+        break;
+    }
+
+
 }

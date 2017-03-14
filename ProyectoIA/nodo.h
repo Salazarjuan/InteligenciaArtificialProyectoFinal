@@ -3,7 +3,9 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <stack>
 using namespace std;
+
 
 class Nodo
 {
@@ -21,15 +23,22 @@ public:
     std::string operacion;
     std::vector<Nodo> amplitud;
     bool expandido;
+    std::vector<Nodo> profundidadStack;
 
 
 
     bool esMeta(int valorCasilla);
+    bool esMeta(Nodo nodo, int mapa[12][12]);
+
     void expandirPorAmplitudSD(int posI, int posJ, int municion, int mapa[12][12]);
     void expandirPorAmplitudCD(int posI, int posJ, int municion, int mapa[12][12]);
     void expandirPorCostoUniformeSD(int posI, int posJ, int municion, int mapa[12][12]);
     void expandirPorCostoUniformeCD(int posI, int posJ, int municion, int mapa[12][12]);
+    void expandirPorPreferenteProfundidadSD(int posI, int posJ, int municion, int mapa[12][12]);
+    void expandirPorPreferenteProfundidadCD(int posI, int posJ, int municion, int mapa[12][12]);
 
+
+    bool yaVisitado(Nodo nodo);
 
 };
 
