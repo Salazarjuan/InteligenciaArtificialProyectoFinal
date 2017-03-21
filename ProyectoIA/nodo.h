@@ -28,7 +28,7 @@ public:
 
 
     bool esMeta(int valorCasilla);
-    bool esMeta(Nodo nodo, int mapa[12][12]);
+    bool esMeta(int pos, int mapa[12][12]);
 
     void expandirPorAmplitudSD(int posI, int posJ, int municion, int mapa[12][12]);
     void expandirPorAmplitudCD(int posI, int posJ, int municion, int mapa[12][12]);

@@ -25,10 +25,11 @@ bool Nodo::esMeta(int valorCasilla){
     return false;
 }
 
-bool Nodo::esMeta(Nodo nodo, int mapa[12][12]){
+bool Nodo::esMeta(int pos, int mapa[12][12]){
     //cout<<nodo.posI<<" "<<nodo.posJ<<" ";
     //cout<<mapa[nodo.posI][nodo.posJ]<<endl;
-    if(mapa[nodo.posI][nodo.posJ] == 4){
+
+    if(mapa[profundidadStack[pos].posI][profundidadStack[pos].posJ] == 4){
         return true;
     }
     return false;
@@ -575,9 +576,10 @@ void Nodo::expandirPorCostoUniformeCD(int posI, int posJ, int municion, int mapa
 
 void Nodo::expandirPorPreferenteProfundidadSD(int posI, int posJ, int municion, int mapa[12][12]){
     Nodo raiz(posI, posJ, municion, NULL, 0, 0, "");
-    //profundidadStack.push_back(raiz);
-    int i = 0;
-    cout<<i<<"," << raiz.posI << "," << raiz.posJ << "," << esMeta(raiz, mapa) << endl ;
+
+    raiz.expandido = true;
+    int i = 0, ultimaPos = 0;
+
     if((mapa[raiz.posI + 1][raiz.posJ] != 1)){
         Nodo nodoAbajo(raiz.posI + 1, raiz.posJ, municion, &raiz, raiz.profundidad + 1, 0, "Abajo");
         profundidadStack.push_back(nodoAbajo);
@@ -595,43 +597,35 @@ void Nodo::expandirPorPreferenteProfundidadSD(int posI, int posJ, int municion, 
         profundidadStack.push_back(nodoDerecha);
     }
 
-    std::vector<Nodo>::iterator it = profundidadStack.end();
-    it--;
-    Nodo unNodo = * it;
-    cout << unNodo.posI << "," << unNodo.posJ << endl;
-    //cout<<unNodo.posI<<"\t"<<unNodo.posJ<<endl;
-    while(!esMeta(unNodo, mapa)){
+    for(int j = 0; j < profundidadStack.size(); j++){
+        (profundidadStack[j].expandido == false)?  ultimaPos = j: 0;
+    }
 
-        profundidadStack.pop_back();
+    while(!esMeta(ultimaPos, mapa)){
+        for(int j = 0; j < profundidadStack.size(); j++){
+            (profundidadStack[j].expandido == false)?  ultimaPos = j: 0;
+        }
 
-        if((mapa[unNodo.posI + 1][unNodo.posJ] != 1) && (unNodo.padre->posI != unNodo.posI + 1)){
-            Nodo nodoAbajo(unNodo.posI + 1, unNodo.posJ, municion, &unNodo, unNodo.profundidad + 1, 0, "Abajo");
+        profundidadStack[ultimaPos].expandido = true;
+
+        if((mapa[profundidadStack[ultimaPos].posI + 1][profundidadStack[ultimaPos].posJ] != 1) && (profundidadStack[ultimaPos].padre->posI != profundidadStack[ultimaPos].posI + 1)){
+            Nodo nodoAbajo(profundidadStack[ultimaPos].posI + 1, profundidadStack[ultimaPos].posJ, municion, &profundidadStack[ultimaPos], profundidadStack[ultimaPos].profundidad + 1, 0, "Abajo");
             profundidadStack.push_back(nodoAbajo);
-            //cout << nodoAbajo.posI << nodoAbajo.posJ << endl;
         }
-        if((mapa[unNodo.posI][unNodo.posJ - 1] != 1) && (unNodo.padre->posJ != unNodo.posJ - 1)){
-            Nodo nodoIzquierda(unNodo.posI, unNodo.posJ - 1, municion, &unNodo, unNodo.profundidad + 1, 0, "Izquierda");
+        if((mapa[profundidadStack[ultimaPos].posI][profundidadStack[ultimaPos].posJ - 1] != 1) && (profundidadStack[ultimaPos].padre->posJ != profundidadStack[ultimaPos].posJ - 1)){
+            Nodo nodoIzquierda(profundidadStack[ultimaPos].posI, profundidadStack[ultimaPos].posJ - 1, municion, &profundidadStack[ultimaPos], profundidadStack[ultimaPos].profundidad + 1, 0, "Izquierda");
             profundidadStack.push_back(nodoIzquierda);
-            //cout << nodoIzquierda.posI << nodoIzquierda.posJ << endl;
         }
-        if((mapa[unNodo.posI - 1][unNodo.posJ] != 1) && (unNodo.padre->posI != unNodo.posI - 1)){
-            Nodo nodoArriba(unNodo.posI - 1, unNodo.posJ, municion, &unNodo, unNodo.profundidad + 1, 0, "Arriba");
+        if((mapa[profundidadStack[ultimaPos].posI - 1][profundidadStack[ultimaPos].posJ] != 1) && (profundidadStack[ultimaPos].padre->posI != profundidadStack[ultimaPos].posI - 1)){
+            Nodo nodoArriba(profundidadStack[ultimaPos].posI - 1, profundidadStack[ultimaPos].posJ, municion, &profundidadStack[ultimaPos], profundidadStack[ultimaPos].profundidad + 1, 0, "Arriba");
             profundidadStack.push_back(nodoArriba);
-            //cout << nodoArriba.posI << nodoArriba.posJ << endl;
         }
-        if((mapa[unNodo.posI][unNodo.posJ + 1] != 1) && (unNodo.padre->posJ != unNodo.posJ + 1)){
-            Nodo nodoDerecha(unNodo.posI, unNodo.posJ + 1, municion, &unNodo, unNodo.profundidad + 1, 0, "Derecha");
+        if((mapa[profundidadStack[ultimaPos].posI][profundidadStack[ultimaPos].posJ + 1] != 1) && (profundidadStack[ultimaPos].padre->posJ != profundidadStack[ultimaPos].posJ + 1)){
+            Nodo nodoDerecha(profundidadStack[ultimaPos].posI, profundidadStack[ultimaPos].posJ + 1, municion, &profundidadStack[ultimaPos], profundidadStack[ultimaPos].profundidad + 1, 0, "Derecha");
             profundidadStack.push_back(nodoDerecha);
-            //cout << nodoDerecha.posI << "," << nodoDerecha.posJ << endl;
+
         }
 
-        //cout<<"antes"<<profundidadStack.size()<<endl;
-
-        //cout<<"despues"<<profundidadStack.size()<<endl;
-        std::vector<Nodo>::iterator it = profundidadStack.end();
-        it--;
-        unNodo = * it;
-        //cout<<i<<"," << unNodo.posI << "," << unNodo.posJ << "," << esMeta(unNodo, mapa) << endl ;
         i++;
         if(i > 10000){
             cout<<"demasiadas iteraciones";
@@ -639,16 +633,27 @@ void Nodo::expandirPorPreferenteProfundidadSD(int posI, int posJ, int municion, 
         }
     }
 
-        cout<<" "<<unNodo.posI<<" "<<unNodo.posJ<<" "<<unNodo.profundidad<<endl;
+    cout<<"Meta encontrada: "<<profundidadStack[ultimaPos].posI<<" "<<profundidadStack[ultimaPos].posJ<<" "<<profundidadStack[ultimaPos].profundidad<<endl;
 
-
+    Nodo solucion = profundidadStack[ultimaPos];
+    Nodo * padres = solucion.padre;
+    while(padres->padre != NULL){
+        cout << padres->posI << "\t" << padres->posJ << endl;
+        if(padres->padre != NULL){
+            padres = padres->padre;
+        }else{
+            cout << padres->posI << "\t" << padres->posJ << endl;
+        }
+    }
+    cout << padres->posI << "\t" << padres->posJ << endl;
 }
 
 void Nodo::expandirPorPreferenteProfundidadCD(int posI, int posJ, int municion, int mapa[12][12]){
     Nodo raiz(posI, posJ, municion, NULL, 0, 0, "");
-    //profundidadStack.push_back(raiz);
-    int i = 0;
-    cout<<i<<"," << raiz.posI << "," << raiz.posJ << "," << esMeta(raiz, mapa) << endl ;
+
+    raiz.expandido = true;
+    int i = 0, ultimaPos = 0;
+
     if((mapa[raiz.posI + 1][raiz.posJ] != 1)){
         Nodo nodoAbajo(raiz.posI + 1, raiz.posJ, municion, &raiz, raiz.profundidad + 1, 0, "Abajo");
         profundidadStack.push_back(nodoAbajo);
@@ -666,55 +671,55 @@ void Nodo::expandirPorPreferenteProfundidadCD(int posI, int posJ, int municion, 
         profundidadStack.push_back(nodoDerecha);
     }
 
-    std::vector<Nodo>::iterator it = profundidadStack.end();
-    it--;
-    Nodo unNodo = * it;
-    cout << unNodo.posI << "," << unNodo.posJ << endl;
-    //cout<<unNodo.posI<<"\t"<<unNodo.posJ<<endl;
-    while(!esMeta(unNodo, mapa)){
+    for(int j = 0; j < profundidadStack.size(); j++){
+        (profundidadStack[j].expandido == false)?  ultimaPos = j: 0;
+    }
 
-        profundidadStack.pop_back();
+    while(!esMeta(ultimaPos, mapa)){
+        for(int j = 0; j < profundidadStack.size(); j++){
+            (profundidadStack[j].expandido == false)?  ultimaPos = j: 0;
+        }
 
-        if((mapa[unNodo.posI + 1][unNodo.posJ] != 1) && (unNodo.padre->posI != unNodo.posI + 1)){
-            Nodo nodoAbajo(unNodo.posI + 1, unNodo.posJ, municion, &unNodo, unNodo.profundidad + 1, 0, "Abajo");
+        profundidadStack[ultimaPos].expandido = true;
+
+        if((mapa[profundidadStack[ultimaPos].posI + 1][profundidadStack[ultimaPos].posJ] != 1) && (profundidadStack[ultimaPos].padre->posI != profundidadStack[ultimaPos].posI + 1)){
+            Nodo nodoAbajo(profundidadStack[ultimaPos].posI + 1, profundidadStack[ultimaPos].posJ, municion, &profundidadStack[ultimaPos], profundidadStack[ultimaPos].profundidad + 1, 0, "Abajo");
             profundidadStack.push_back(nodoAbajo);
-            //cout << nodoAbajo.posI << nodoAbajo.posJ << endl;
         }
-        if((mapa[unNodo.posI][unNodo.posJ - 1] != 1) && (unNodo.padre->posJ != unNodo.posJ - 1)){
-            Nodo nodoIzquierda(unNodo.posI, unNodo.posJ - 1, municion, &unNodo, unNodo.profundidad + 1, 0, "Izquierda");
+        if((mapa[profundidadStack[ultimaPos].posI][profundidadStack[ultimaPos].posJ - 1] != 1) && (profundidadStack[ultimaPos].padre->posJ != profundidadStack[ultimaPos].posJ - 1)){
+            Nodo nodoIzquierda(profundidadStack[ultimaPos].posI, profundidadStack[ultimaPos].posJ - 1, municion, &profundidadStack[ultimaPos], profundidadStack[ultimaPos].profundidad + 1, 0, "Izquierda");
             profundidadStack.push_back(nodoIzquierda);
-            //cout << nodoIzquierda.posI << nodoIzquierda.posJ << endl;
         }
-        if((mapa[unNodo.posI - 1][unNodo.posJ] != 1) && (unNodo.padre->posI != unNodo.posI - 1)){
-            Nodo nodoArriba(unNodo.posI - 1, unNodo.posJ, municion, &unNodo, unNodo.profundidad + 1, 0, "Arriba");
+        if((mapa[profundidadStack[ultimaPos].posI - 1][profundidadStack[ultimaPos].posJ] != 1) && (profundidadStack[ultimaPos].padre->posI != profundidadStack[ultimaPos].posI - 1)){
+            Nodo nodoArriba(profundidadStack[ultimaPos].posI - 1, profundidadStack[ultimaPos].posJ, municion, &profundidadStack[ultimaPos], profundidadStack[ultimaPos].profundidad + 1, 0, "Arriba");
             profundidadStack.push_back(nodoArriba);
-            //cout << nodoArriba.posI << nodoArriba.posJ << endl;
         }
-        if((mapa[unNodo.posI][unNodo.posJ + 1] != 1) && (unNodo.padre->posJ != unNodo.posJ + 1)){
-            Nodo nodoDerecha(unNodo.posI, unNodo.posJ + 1, municion, &unNodo, unNodo.profundidad + 1, 0, "Derecha");
+        if((mapa[profundidadStack[ultimaPos].posI][profundidadStack[ultimaPos].posJ + 1] != 1) && (profundidadStack[ultimaPos].padre->posJ != profundidadStack[ultimaPos].posJ + 1)){
+            Nodo nodoDerecha(profundidadStack[ultimaPos].posI, profundidadStack[ultimaPos].posJ + 1, municion, &profundidadStack[ultimaPos], profundidadStack[ultimaPos].profundidad + 1, 0, "Derecha");
             profundidadStack.push_back(nodoDerecha);
-            //cout << nodoDerecha.posI << "," << nodoDerecha.posJ << endl;
+
         }
 
-        //cout<<"antes"<<profundidadStack.size()<<endl;
-
-        //cout<<"despues"<<profundidadStack.size()<<endl;
-        std::vector<Nodo>::iterator it = profundidadStack.end();
-        it--;
-        unNodo = * it;
-        //cout<<i<<"," << unNodo.posI << "," << unNodo.posJ << "," << esMeta(unNodo, mapa) << endl ;
-        if(yaVisitado(unNodo)){
-            while(unNodo.padre != NULL){
-
-            }
-        }
         i++;
         if(i > 10000){
             cout<<"demasiadas iteraciones";
             break;
         }
     }
-        cout<<" "<<unNodo.posI<<" "<<unNodo.posJ<<" "<<unNodo.profundidad<<endl;
+
+    cout<<"Meta encontrada: "<<profundidadStack[ultimaPos].posI<<" "<<profundidadStack[ultimaPos].posJ<<" "<<profundidadStack[ultimaPos].profundidad<<endl;
+
+    Nodo solucion = profundidadStack[ultimaPos];
+    Nodo * padres = solucion.padre;
+    while(padres->padre != NULL){
+        cout << padres->posI << "\t" << padres->posJ << endl;
+        if(padres->padre != NULL){
+            padres = padres->padre;
+        }else{
+            cout << padres->posI << "\t" << padres->posJ << endl;
+        }
+    }
+    cout << padres->posI << "\t" << padres->posJ << endl;
 }
 
 

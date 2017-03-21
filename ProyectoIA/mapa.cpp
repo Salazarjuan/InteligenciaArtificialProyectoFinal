@@ -83,37 +83,38 @@ void Mapa::on_buscarSolucion_btn_clicked()
 
     switch(id){
     case 0:
-        cout<<"Buen intento: "<<"Amplitud SD"<<endl;
+        cout<<"Amplitud SD"<<endl;
         nodo->expandirPorAmplitudSD(posI, posJ, municion, mapa);
         delete nodo;
         nodo = 0;
         break;
     case 1:
-        cout<<"Buen intento: "<<"Amplitud CD"<<endl;
-        //nodo->expandirPorAmplitudCD(posI, posJ, municion, mapa);
+        cout<<"Amplitud CD"<<endl;
+        nodo->expandirPorAmplitudCD(posI, posJ, municion, mapa);
         delete nodo;
         nodo = 0;
         break;
     case 2:
-        cout<<"Buen intento: "<<"Costo CC"<<endl;
+        cout<<"Costo SD"<<endl;
         nodo->expandirPorCostoUniformeSD(posI, posJ, municion, mapa);
         delete nodo;
         nodo = 0;
         break;
     case 3:
-        cout<<"Buen intento: "<<"Costo SC"<<endl;
-        //nodo->expandirPorCostoUniformeCD(posI, posJ, municion, mapa);
+        cout<<"Costo CD"<<endl;
+        nodo->expandirPorCostoUniformeCD(posI, posJ, municion, mapa);
         delete nodo;
         nodo = 0;
         break;
     case 4:
-        cout<<"Buen intento: "<<"Profundidad SD"<<endl;
+        cout<<"Profundidad Con C"<<endl;
         nodo->expandirPorPreferenteProfundidadSD(posI, posJ, municion, mapa);
         delete nodo;
         nodo = 0;
         break;
     case 5:
-        cout<<"Buen intento: "<<"Proundidad CD"<<endl;
+        cout<<"Proundidad Sin C"<<endl;
+        nodo->expandirPorPreferenteProfundidadCD(posI, posJ, municion, mapa);
         break;
     case 6:
         cout<<"Buen intento"<<"A* SD"<<endl;
