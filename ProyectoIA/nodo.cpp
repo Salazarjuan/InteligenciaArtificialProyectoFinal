@@ -651,6 +651,7 @@ void Nodo::expandirPorPreferenteProfundidadSD(int posI, int posJ, int municion, 
 void Nodo::expandirPorPreferenteProfundidadCD(int posI, int posJ, int municion, int mapa[12][12]){
     Nodo raiz(posI, posJ, municion, NULL, 0, 0, "");
 
+
     raiz.expandido = true;
     int i = 0, ultimaPos = 0;
 
@@ -676,11 +677,20 @@ void Nodo::expandirPorPreferenteProfundidadCD(int posI, int posJ, int municion, 
     }
 
     while(!esMeta(ultimaPos, mapa)){
+
+        if(yaVisitado(profundidadStack[ultimaPos])){
+            profundidadStack.erase(profundidadStack.end());
+
+        }
+
         for(int j = 0; j < profundidadStack.size(); j++){
             (profundidadStack[j].expandido == false)?  ultimaPos = j: 0;
         }
 
         profundidadStack[ultimaPos].expandido = true;
+
+
+        //cout<<"ultima Pos:"<<ultimaPos<<"\t"<< profundidadStack.size()<<endl;
 
         if((mapa[profundidadStack[ultimaPos].posI + 1][profundidadStack[ultimaPos].posJ] != 1) && (profundidadStack[ultimaPos].padre->posI != profundidadStack[ultimaPos].posI + 1)){
             Nodo nodoAbajo(profundidadStack[ultimaPos].posI + 1, profundidadStack[ultimaPos].posJ, municion, &profundidadStack[ultimaPos], profundidadStack[ultimaPos].profundidad + 1, 0, "Abajo");
