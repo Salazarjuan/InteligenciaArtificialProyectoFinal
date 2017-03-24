@@ -4,6 +4,7 @@
 #include <vector>
 #include <iostream>
 #include <stack>
+#include <math.h>
 using namespace std;
 
 
@@ -36,6 +37,9 @@ public:
     void expandirPorCostoUniformeCD(int posI, int posJ, int municion, int mapa[12][12]);
     void expandirPorPreferenteProfundidadSD(int posI, int posJ, int municion, int mapa[12][12]);
     void expandirPorPreferenteProfundidadCD(int posI, int posJ, int municion, int mapa[12][12]);
+    void expandirPorBusquedaAvaraSD(int posI, int posJ, int municion, int mapa[12][12]);
+    void expandirPorAEstrellaSD(int posI, int posJ, int municion, int mapa[12][12]);
+    void expandirPorAEstrellaCD(int posI, int posJ, int municion, int mapa[12][12]);
 
 
     bool yaVisitado(Nodo nodo);

@@ -588,7 +588,7 @@ void Nodo::expandirPorPreferenteProfundidadSD(int posI, int posJ, int municion, 
         Nodo nodoIzquierda(raiz.posI, raiz.posJ - 1, municion, &raiz, raiz.profundidad + 1, 0, "Izquierda");
         profundidadStack.push_back(nodoIzquierda);
     }
-    if(mapa[raiz.posI][raiz.posJ] != 1){
+    if(mapa[raiz.posI-1][raiz.posJ] != 1){
         Nodo nodoArriba(raiz.posI - 1, raiz.posJ, municion, &raiz, raiz.profundidad + 1, 0, "Arriba");
         profundidadStack.push_back(nodoArriba);
     }
@@ -649,6 +649,7 @@ void Nodo::expandirPorPreferenteProfundidadSD(int posI, int posJ, int municion, 
 }
 
 void Nodo::expandirPorPreferenteProfundidadCD(int posI, int posJ, int municion, int mapa[12][12]){
+
     Nodo raiz(posI, posJ, municion, NULL, 0, 0, "");
 
 
@@ -663,7 +664,7 @@ void Nodo::expandirPorPreferenteProfundidadCD(int posI, int posJ, int municion, 
         Nodo nodoIzquierda(raiz.posI, raiz.posJ - 1, municion, &raiz, raiz.profundidad + 1, 0, "Izquierda");
         profundidadStack.push_back(nodoIzquierda);
     }
-    if(mapa[raiz.posI][raiz.posJ] != 1){
+    if(mapa[raiz.posI-1][raiz.posJ] != 1){
         Nodo nodoArriba(raiz.posI - 1, raiz.posJ, municion, &raiz, raiz.profundidad + 1, 0, "Arriba");
         profundidadStack.push_back(nodoArriba);
     }
@@ -677,10 +678,11 @@ void Nodo::expandirPorPreferenteProfundidadCD(int posI, int posJ, int municion, 
     }
 
     while(!esMeta(ultimaPos, mapa)){
-
+        for(int j = 0; j < profundidadStack.size(); j++){
+            (profundidadStack[j].expandido == false)?  ultimaPos = j: 0;
+        }
         if(yaVisitado(profundidadStack[ultimaPos])){
-            profundidadStack.erase(profundidadStack.end());
-
+            profundidadStack.at(ultimaPos).expandido = true;
         }
 
         for(int j = 0; j < profundidadStack.size(); j++){
@@ -732,6 +734,642 @@ void Nodo::expandirPorPreferenteProfundidadCD(int posI, int posJ, int municion, 
     cout << padres->posI << "\t" << padres->posJ << endl;
 }
 
+void Nodo::expandirPorBusquedaAvaraSD(int posI, int posJ, int municion, int mapa[12][12])
+{
+    int counter = 0;
+    int posIFinal = 0;
+    int posJFinal = 0;
+    int matrixManhattam[12][12];
+
+    for(int i = 0; i < 12; i++){
+        for(int j = 0; j < 12; j++){
+            matrixManhattam[i][j] = -1;
+        }
+    }
+
+    for(int i = 1; i < 11; i++){
+        for(int j = 1; j < 11; j++){
+            if(mapa[i][j] == 4){
+                posIFinal = i;
+                posJFinal = j;
+            }
+        }
+    }
+
+    for(int i = 1; i < 11; i++){
+        for(int j = 1; j < 11; j++){
+            matrixManhattam[i][j] = (abs(posIFinal-i) + abs(posJFinal-j));
+        }
+    }
+
+    /*
+    cout<<endl;
+    for(int i = 0; i < 12; i++){
+        for(int j = 0; j < 12; j++){
+            cout<<matrixManhattam[i][j]<<"\t";
+        }
+        cout<<endl;
+        cout<<endl;
+    }
+    cout<<endl;*/
+
+    amplitud.clear();
+    int i = 0;
+    int menor = 9999999999;
+    Nodo raiz(posI, posJ, municion, NULL, 0, 0, "");
+    amplitud.push_back(raiz);
+
+    if(mapa[amplitud.at(i).posI - 1][amplitud.at(i).posJ] != 1){
+        Nodo nodoArriba(amplitud.at(i).posI - 1, amplitud.at(i).posJ, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, matrixManhattam[amplitud.at(i).posI - 1][amplitud.at(i).posJ], "Arriba");
+        amplitud.push_back(nodoArriba);
+    }
+
+    if(mapa[amplitud.at(i).posI + 1][amplitud.at(i).posJ] != 1){
+        Nodo nodoArriba(amplitud.at(i).posI + 1, amplitud.at(i).posJ, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, matrixManhattam[amplitud.at(i).posI + 1][amplitud.at(i).posJ], "Abajo");
+        amplitud.push_back(nodoArriba);
+    }
+
+    if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ - 1] != 1){
+        Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ - 1, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, matrixManhattam[amplitud.at(i).posI][amplitud.at(i).posJ - 1], "Izquierda");
+        amplitud.push_back(nodoArriba);
+    }
+
+    if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ + 1] != 1){
+        Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ + 1, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, matrixManhattam[amplitud.at(i).posI][amplitud.at(i).posJ + 1], "Derecha");
+        amplitud.push_back(nodoArriba);
+    }
+
+    //amplitud.erase(amplitud.begin() + i);
+    amplitud.at(i).expandido = true;
+    for(int j = 0; j < amplitud.size(); j++){
+        if(amplitud.at(j).expandido == false){
+            if(amplitud.at(j).costo < menor){
+                menor = amplitud.at(j).costo;
+                i = j;
+
+            }
+        }
+    }
+
+    while(!esMeta(mapa[amplitud.at(i).posI][amplitud.at(i).posJ]) && (counter < 10000)){
+
+        //cout << mapa[amplitud.at(i).posI][amplitud.at(i).posJ] << endl;
+        //cout << amplitud.at(i).posI<<" "<<amplitud.at(i).posJ<< endl;
+        if(mapa[amplitud.at(i).posI - 1][amplitud.at(i).posJ] != 1){
+            Nodo nodoArriba(amplitud.at(i).posI - 1, amplitud.at(i).posJ, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, matrixManhattam[amplitud.at(i).posI - 1][amplitud.at(i).posJ], "Arriba");
+            amplitud.push_back(nodoArriba);
+        }
+
+        if(mapa[amplitud.at(i).posI + 1][amplitud.at(i).posJ] != 1){
+            Nodo nodoArriba(amplitud.at(i).posI + 1, amplitud.at(i).posJ, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, matrixManhattam[amplitud.at(i).posI + 1][amplitud.at(i).posJ], "Abajo");
+            amplitud.push_back(nodoArriba);
+        }
+
+        if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ - 1] != 1){
+            Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ - 1, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, matrixManhattam[amplitud.at(i).posI][amplitud.at(i).posJ - 1], "Izquierda");
+            amplitud.push_back(nodoArriba);
+        }
+
+        if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ + 1] != 1){
+            Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ + 1, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, matrixManhattam[amplitud.at(i).posI][amplitud.at(i).posJ + 1], "Derecha");
+            amplitud.push_back(nodoArriba);
+        }
+
+        //amplitud.erase(amplitud.begin() + i);
+        menor = 99999999;
+        amplitud.at(i).expandido = true;
+        for(int j = 0; j < amplitud.size(); j++){
+            if(amplitud.at(j).expandido == false){
+                if(amplitud.at(j).costo < menor){
+                    menor = amplitud.at(j).costo;
+                    i = j;
+                }
+            }
+        }
+        counter++;
+    }
+
+    if(counter >= 10000){
+        cout<<"demasiadas iteraciones"<<endl;
+    }else{
+        cout<<i<<" "<<amplitud.at(i).posI<<" "<<amplitud.at(i).posJ<<" "<<amplitud.at(i).profundidad<<endl;
+
+        Nodo solucion = amplitud.at(i);
+        Nodo * padres = solucion.padre;
+        while(padres->padre != NULL){
+            cout << padres->posI << "\t" << padres->posJ << endl;
+            if(padres->padre != NULL){
+                padres = padres->padre;
+            }else{
+                cout << padres->posI << "\t" << padres->posJ << endl;
+            }
+        }
+        cout << raiz.posI << "\t" << raiz.posJ << endl;
+    }
+}
+
+void Nodo::expandirPorAEstrellaSD(int posI, int posJ, int municion, int mapa[12][12])
+{
+    int posIFinal = 0;
+    int posJFinal = 0;
+    int matrixManhattam[12][12];
+
+    for(int i = 0; i < 12; i++){
+        for(int j = 0; j < 12; j++){
+            matrixManhattam[i][j] = -1;
+        }
+    }
+
+    for(int i = 1; i < 11; i++){
+        for(int j = 1; j < 11; j++){
+            if(mapa[i][j] == 4){
+                posIFinal = i;
+                posJFinal = j;
+            }
+        }
+    }
+
+    for(int i = 1; i < 11; i++){
+        for(int j = 1; j < 11; j++){
+            matrixManhattam[i][j] = (abs(posIFinal-i) + abs(posJFinal-j));
+        }
+    }
+
+    /*
+    cout<<endl;
+    for(int i = 0; i < 12; i++){
+        for(int j = 0; j < 12; j++){
+            cout<<matrixManhattam[i][j]<<"\t";
+        }
+        cout<<endl;
+        cout<<endl;
+    }
+    cout<<endl;*/
+
+    amplitud.clear();
+    int i = 0;
+    int menor = 9999999999;
+    Nodo raiz(posI, posJ, municion, NULL, 0, 0, "");
+    amplitud.push_back(raiz);
+
+    if(raiz.municion > 0){
+        if(mapa[amplitud.at(i).posI - 1][amplitud.at(i).posJ] != 1){
+            if(mapa[amplitud.at(i).posI - 1][amplitud.at(i).posJ] == 3){
+                Nodo nodoArriba(amplitud.at(i).posI - 1, amplitud.at(i).posJ, amplitud.at(i).municion - 1, &amplitud.at(i), amplitud.at(i).profundidad + 1, 1, "Arriba");
+                amplitud.push_back(nodoArriba);
+            }else{
+                Nodo nodoArriba(amplitud.at(i).posI - 1, amplitud.at(i).posJ, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, 1, "Arriba");
+                amplitud.push_back(nodoArriba);
+            }
+        }
+
+        if(mapa[amplitud.at(i).posI + 1][amplitud.at(i).posJ] != 1){
+            if(mapa[amplitud.at(i).posI + 1][amplitud.at(i).posJ] == 3){
+                Nodo nodoArriba(amplitud.at(i).posI + 1, amplitud.at(i).posJ, amplitud.at(i).municion - 1, &amplitud.at(i), amplitud.at(i).profundidad + 1, 1, "Abajo");
+                amplitud.push_back(nodoArriba);
+            }else{
+                Nodo nodoArriba(amplitud.at(i).posI + 1, amplitud.at(i).posJ, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, 1, "Abajo");
+                amplitud.push_back(nodoArriba);
+            }
+        }
+
+        if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ - 1] != 1){
+            if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ - 1] == 3){
+                Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ - 1, amplitud.at(i).municion - 1, &amplitud.at(i), amplitud.at(i).profundidad + 1, 1, "Izquierda");
+                amplitud.push_back(nodoArriba);
+            }else{
+                Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ - 1, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, 1, "Izquierda");
+                amplitud.push_back(nodoArriba);
+            }
+        }
+
+        if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ + 1] != 1){
+            if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ + 1] == 3){
+                Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ + 1, amplitud.at(i).municion - 1, &amplitud.at(i), amplitud.at(i).profundidad + 1, 1, "Derecha");
+                amplitud.push_back(nodoArriba);
+            }else{
+                Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ + 1, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, 1, "Derecha");
+                amplitud.push_back(nodoArriba);
+            }
+        }
+    }else{
+        if(mapa[amplitud.at(i).posI - 1][amplitud.at(i).posJ] != 1){
+            if(mapa[amplitud.at(i).posI - 1][amplitud.at(i).posJ] == 3){
+                Nodo nodoArriba(amplitud.at(i).posI - 1, amplitud.at(i).posJ, amplitud.at(i).municion - 1, &amplitud.at(i), amplitud.at(i).profundidad + 1, 5, "Arriba");
+                amplitud.push_back(nodoArriba);
+            }else{
+                Nodo nodoArriba(amplitud.at(i).posI - 1, amplitud.at(i).posJ, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, 1, "Arriba");
+                amplitud.push_back(nodoArriba);
+            }
+        }
+
+        if(mapa[amplitud.at(i).posI + 1][amplitud.at(i).posJ] != 1){
+            if(mapa[amplitud.at(i).posI + 1][amplitud.at(i).posJ] == 3){
+                Nodo nodoArriba(amplitud.at(i).posI + 1, amplitud.at(i).posJ, amplitud.at(i).municion - 1, &amplitud.at(i), amplitud.at(i).profundidad + 1, 5, "Abajo");
+                amplitud.push_back(nodoArriba);
+            }else{
+                Nodo nodoArriba(amplitud.at(i).posI + 1, amplitud.at(i).posJ, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, 1, "Abajo");
+                amplitud.push_back(nodoArriba);
+            }
+        }
+
+        if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ - 1] != 1){
+            if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ - 1] == 3){
+                Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ - 1, amplitud.at(i).municion - 1, &amplitud.at(i), amplitud.at(i).profundidad + 1, 5, "Izquierda");
+                amplitud.push_back(nodoArriba);
+            }else{
+                Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ - 1, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, 1, "Izquierda");
+                amplitud.push_back(nodoArriba);
+            }
+        }
+
+        if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ + 1] != 1){
+            if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ + 1] == 3){
+                Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ + 1, amplitud.at(i).municion - 1, &amplitud.at(i), amplitud.at(i).profundidad + 1, 5, "Derecha");
+                amplitud.push_back(nodoArriba);
+            }else{
+                Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ + 1, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, 1, "Derecha");
+                amplitud.push_back(nodoArriba);
+            }
+        }
+    }
+
+    //amplitud.erase(amplitud.begin() + i);
+    amplitud.at(i).expandido = true;
+    for(int j = 0; j < amplitud.size(); j++){
+        if(amplitud.at(j).expandido == false){
+            if((amplitud.at(j).costo + matrixManhattam[amplitud.at(j).posI][amplitud.at(j).posJ]) < menor){
+                menor = amplitud.at(j).costo + matrixManhattam[amplitud.at(j).posI][amplitud.at(j).posJ];
+                i = j;
+
+            }
+        }
+    }
+    while(!esMeta(mapa[amplitud.at(i).posI][amplitud.at(i).posJ])){
+        //cout << mapa[amplitud.at(i).posI][amplitud.at(i).posJ] << endl;
+        //cout << amplitud.at(i).posI<<" "<<amplitud.at(i).posJ<< endl;
+        if(amplitud.at(i).municion > 0){
+            if(mapa[amplitud.at(i).posI - 1][amplitud.at(i).posJ] != 1 && amplitud.at(i).padre->posI != amplitud.at(i).posI - 1){
+                if(mapa[amplitud.at(i).posI - 1][amplitud.at(i).posJ] == 3){
+                    Nodo nodoArriba(amplitud.at(i).posI - 1, amplitud.at(i).posJ, amplitud.at(i).municion - 1, &amplitud.at(i), amplitud.at(i).profundidad + 1, amplitud.at(i).costo + 1, "Arriba");
+                    amplitud.push_back(nodoArriba);
+                }else{
+                    Nodo nodoArriba(amplitud.at(i).posI - 1, amplitud.at(i).posJ, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, amplitud.at(i).costo + 1, "Arriba");
+                    amplitud.push_back(nodoArriba);
+                }
+            }
+
+            if(mapa[amplitud.at(i).posI + 1][amplitud.at(i).posJ] != 1 && amplitud.at(i).padre->posI != amplitud.at(i).posI + 1){
+                if(mapa[amplitud.at(i).posI + 1][amplitud.at(i).posJ] == 3){
+                    Nodo nodoArriba(amplitud.at(i).posI + 1, amplitud.at(i).posJ, amplitud.at(i).municion - 1, &amplitud.at(i), amplitud.at(i).profundidad + 1, amplitud.at(i).costo + 1, "Abajo");
+                    amplitud.push_back(nodoArriba);
+                }else{
+                    Nodo nodoArriba(amplitud.at(i).posI + 1, amplitud.at(i).posJ, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, amplitud.at(i).costo + 1, "Abajo");
+                    amplitud.push_back(nodoArriba);
+                }
+            }
+
+            if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ - 1] != 1 && amplitud.at(i).padre->posJ != amplitud.at(i).posJ - 1){
+                if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ - 1] == 3){
+                    Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ - 1, amplitud.at(i).municion - 1, &amplitud.at(i), amplitud.at(i).profundidad + 1, amplitud.at(i).costo + 1, "Izquierda");
+                    amplitud.push_back(nodoArriba);
+                }else{
+                    Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ - 1, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, amplitud.at(i).costo + 1, "Izquierda");
+                    amplitud.push_back(nodoArriba);
+                }
+            }
+
+            if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ + 1] != 1 && amplitud.at(i).padre->posJ != amplitud.at(i).posJ + 1){
+                if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ + 1] == 3){
+                    Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ + 1, amplitud.at(i).municion - 1, &amplitud.at(i), amplitud.at(i).profundidad + 1, amplitud.at(i).costo + 1, "Derecha");
+                    amplitud.push_back(nodoArriba);
+                }else{
+                    Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ + 1, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, amplitud.at(i).costo + 1, "Derecha");
+                    amplitud.push_back(nodoArriba);
+                }
+            }
+        }else{
+            if(mapa[amplitud.at(i).posI - 1][amplitud.at(i).posJ] != 1 && amplitud.at(i).padre->posI != amplitud.at(i).posI - 1){
+                if(mapa[amplitud.at(i).posI - 1][amplitud.at(i).posJ] == 3){
+                    Nodo nodoArriba(amplitud.at(i).posI - 1, amplitud.at(i).posJ, amplitud.at(i).municion - 1, &amplitud.at(i), amplitud.at(i).profundidad + 1, amplitud.at(i).costo + 5, "Arriba");
+                    amplitud.push_back(nodoArriba);
+                }else{
+                    Nodo nodoArriba(amplitud.at(i).posI - 1, amplitud.at(i).posJ, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, amplitud.at(i).costo + 1, "Arriba");
+                    amplitud.push_back(nodoArriba);
+                }
+            }
+
+            if(mapa[amplitud.at(i).posI + 1][amplitud.at(i).posJ] != 1 && amplitud.at(i).padre->posI != amplitud.at(i).posI + 1){
+                if(mapa[amplitud.at(i).posI + 1][amplitud.at(i).posJ] == 3){
+                    Nodo nodoArriba(amplitud.at(i).posI + 1, amplitud.at(i).posJ, amplitud.at(i).municion - 1, &amplitud.at(i), amplitud.at(i).profundidad + 1, amplitud.at(i).costo + 5, "Abajo");
+                    amplitud.push_back(nodoArriba);
+                }else{
+                    Nodo nodoArriba(amplitud.at(i).posI + 1, amplitud.at(i).posJ, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, amplitud.at(i).costo + 1, "Abajo");
+                    amplitud.push_back(nodoArriba);
+                }
+            }
+
+            if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ - 1] != 1 && amplitud.at(i).padre->posJ != amplitud.at(i).posJ - 1){
+                if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ - 1] == 3){
+                    Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ - 1, amplitud.at(i).municion - 1, &amplitud.at(i), amplitud.at(i).profundidad + 1, amplitud.at(i).costo + 5, "Izquierda");
+                    amplitud.push_back(nodoArriba);
+                }else{
+                    Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ - 1, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, amplitud.at(i).costo + 1, "Izquierda");
+                    amplitud.push_back(nodoArriba);
+                }
+            }
+
+            if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ + 1] != 1 && amplitud.at(i).padre->posJ != amplitud.at(i).posJ + 1){
+                if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ + 1] == 3){
+                    Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ + 1, amplitud.at(i).municion - 1, &amplitud.at(i), amplitud.at(i).profundidad + 1, amplitud.at(i).costo + 5, "Derecha");
+                    amplitud.push_back(nodoArriba);
+                }else{
+                    Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ + 1, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, amplitud.at(i).costo + 1, "Derecha");
+                    amplitud.push_back(nodoArriba);
+                }
+            }
+        }
+
+        //amplitud.erase(amplitud.begin() + i);
+        menor = 99999999;
+        amplitud.at(i).expandido = true;
+        for(int j = 0; j < amplitud.size(); j++){
+            if(amplitud.at(j).expandido == false){
+                if((amplitud.at(j).costo + matrixManhattam[amplitud.at(j).posI][amplitud.at(j).posJ]) < menor){
+                    menor = amplitud.at(j).costo + matrixManhattam[amplitud.at(j).posI][amplitud.at(j).posJ];
+                    i = j;
+
+                }
+            }
+        }
+
+    }
+    cout<<i<<" "<<amplitud.at(i).posI<<" "<<amplitud.at(i).posJ<<" "<<amplitud.at(i).profundidad<<endl;
+
+    Nodo solucion = amplitud.at(i);
+    Nodo * padres = solucion.padre;
+    while(padres->padre != NULL){
+        cout << padres->posI << "\t" << padres->posJ << endl;
+        if(padres->padre != NULL){
+            padres = padres->padre;
+        }else{
+            cout << padres->posI << "\t" << padres->posJ << endl;
+        }
+    }
+    cout << padres->posI << "\t" << padres->posJ << endl;
+
+}
+
+void Nodo::expandirPorAEstrellaCD(int posI, int posJ, int municion, int mapa[12][12])
+{
+    int posIFinal = 0;
+    int posJFinal = 0;
+    int matrixManhattam[12][12];
+
+    for(int i = 0; i < 12; i++){
+        for(int j = 0; j < 12; j++){
+            matrixManhattam[i][j] = -1;
+        }
+    }
+
+    for(int i = 1; i < 11; i++){
+        for(int j = 1; j < 11; j++){
+            if(mapa[i][j] == 4){
+                posIFinal = i;
+                posJFinal = j;
+            }
+        }
+    }
+
+    for(int i = 1; i < 11; i++){
+        for(int j = 1; j < 11; j++){
+            matrixManhattam[i][j] = (abs(posIFinal-i) + abs(posJFinal-j));
+        }
+    }
+
+    /*
+    cout<<endl;
+    for(int i = 0; i < 12; i++){
+        for(int j = 0; j < 12; j++){
+            cout<<matrixManhattam[i][j]<<"\t";
+        }
+        cout<<endl;
+        cout<<endl;
+    }
+    cout<<endl;*/
+
+    amplitud.clear();
+    int i = 0;
+    int menor = 9999999999;
+    Nodo raiz(posI, posJ, municion, NULL, 0, 0, "");
+    amplitud.push_back(raiz);
+
+    if(raiz.municion > 0){
+        if(mapa[amplitud.at(i).posI - 1][amplitud.at(i).posJ] != 1){
+            if(mapa[amplitud.at(i).posI - 1][amplitud.at(i).posJ] == 3){
+                Nodo nodoArriba(amplitud.at(i).posI - 1, amplitud.at(i).posJ, amplitud.at(i).municion - 1, &amplitud.at(i), amplitud.at(i).profundidad + 1, 1, "Arriba");
+                amplitud.push_back(nodoArriba);
+            }else{
+                Nodo nodoArriba(amplitud.at(i).posI - 1, amplitud.at(i).posJ, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, 1, "Arriba");
+                amplitud.push_back(nodoArriba);
+            }
+        }
+
+        if(mapa[amplitud.at(i).posI + 1][amplitud.at(i).posJ] != 1){
+            if(mapa[amplitud.at(i).posI + 1][amplitud.at(i).posJ] == 3){
+                Nodo nodoArriba(amplitud.at(i).posI + 1, amplitud.at(i).posJ, amplitud.at(i).municion - 1, &amplitud.at(i), amplitud.at(i).profundidad + 1, 1, "Abajo");
+                amplitud.push_back(nodoArriba);
+            }else{
+                Nodo nodoArriba(amplitud.at(i).posI + 1, amplitud.at(i).posJ, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, 1, "Abajo");
+                amplitud.push_back(nodoArriba);
+            }
+        }
+
+        if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ - 1] != 1){
+            if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ - 1] == 3){
+                Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ - 1, amplitud.at(i).municion - 1, &amplitud.at(i), amplitud.at(i).profundidad + 1, 1, "Izquierda");
+                amplitud.push_back(nodoArriba);
+            }else{
+                Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ - 1, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, 1, "Izquierda");
+                amplitud.push_back(nodoArriba);
+            }
+        }
+
+        if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ + 1] != 1){
+            if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ + 1] == 3){
+                Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ + 1, amplitud.at(i).municion - 1, &amplitud.at(i), amplitud.at(i).profundidad + 1, 1, "Derecha");
+                amplitud.push_back(nodoArriba);
+            }else{
+                Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ + 1, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, 1, "Derecha");
+                amplitud.push_back(nodoArriba);
+            }
+        }
+    }else{
+        if(mapa[amplitud.at(i).posI - 1][amplitud.at(i).posJ] != 1){
+            if(mapa[amplitud.at(i).posI - 1][amplitud.at(i).posJ] == 3){
+                Nodo nodoArriba(amplitud.at(i).posI - 1, amplitud.at(i).posJ, amplitud.at(i).municion - 1, &amplitud.at(i), amplitud.at(i).profundidad + 1, 5, "Arriba");
+                amplitud.push_back(nodoArriba);
+            }else{
+                Nodo nodoArriba(amplitud.at(i).posI - 1, amplitud.at(i).posJ, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, 1, "Arriba");
+                amplitud.push_back(nodoArriba);
+            }
+        }
+
+        if(mapa[amplitud.at(i).posI + 1][amplitud.at(i).posJ] != 1){
+            if(mapa[amplitud.at(i).posI + 1][amplitud.at(i).posJ] == 3){
+                Nodo nodoArriba(amplitud.at(i).posI + 1, amplitud.at(i).posJ, amplitud.at(i).municion - 1, &amplitud.at(i), amplitud.at(i).profundidad + 1, 5, "Abajo");
+                amplitud.push_back(nodoArriba);
+            }else{
+                Nodo nodoArriba(amplitud.at(i).posI + 1, amplitud.at(i).posJ, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, 1, "Abajo");
+                amplitud.push_back(nodoArriba);
+            }
+        }
+
+        if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ - 1] != 1){
+            if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ - 1] == 3){
+                Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ - 1, amplitud.at(i).municion - 1, &amplitud.at(i), amplitud.at(i).profundidad + 1, 5, "Izquierda");
+                amplitud.push_back(nodoArriba);
+            }else{
+                Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ - 1, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, 1, "Izquierda");
+                amplitud.push_back(nodoArriba);
+            }
+        }
+
+        if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ + 1] != 1){
+            if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ + 1] == 3){
+                Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ + 1, amplitud.at(i).municion - 1, &amplitud.at(i), amplitud.at(i).profundidad + 1, 5, "Derecha");
+                amplitud.push_back(nodoArriba);
+            }else{
+                Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ + 1, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, 1, "Derecha");
+                amplitud.push_back(nodoArriba);
+            }
+        }
+    }
+
+    //amplitud.erase(amplitud.begin() + i);
+    amplitud.at(i).expandido = true;
+    for(int j = 0; j < amplitud.size(); j++){
+        if(amplitud.at(j).expandido == false){
+            if((amplitud.at(j).costo  + matrixManhattam[amplitud.at(j).posI][amplitud.at(j).posJ]) < menor){
+                menor = amplitud.at(j).costo  + matrixManhattam[amplitud.at(j).posI][amplitud.at(j).posJ];
+                i = j;
+
+            }
+        }
+    }
+    while(!esMeta(mapa[amplitud.at(i).posI][amplitud.at(i).posJ])){
+        //cout << mapa[amplitud.at(i).posI][amplitud.at(i).posJ] << endl;
+        //cout << amplitud.at(i).posI<<" "<<amplitud.at(i).posJ<< endl;
+        if(amplitud.at(i).municion > 0){
+            if(mapa[amplitud.at(i).posI - 1][amplitud.at(i).posJ] != 1){
+                if(mapa[amplitud.at(i).posI - 1][amplitud.at(i).posJ] == 3){
+                    Nodo nodoArriba(amplitud.at(i).posI - 1, amplitud.at(i).posJ, amplitud.at(i).municion - 1, &amplitud.at(i), amplitud.at(i).profundidad + 1, amplitud.at(i).costo + 1, "Arriba");
+                    amplitud.push_back(nodoArriba);
+                }else{
+                    Nodo nodoArriba(amplitud.at(i).posI - 1, amplitud.at(i).posJ, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, amplitud.at(i).costo + 1, "Arriba");
+                    amplitud.push_back(nodoArriba);
+                }
+            }
+
+            if(mapa[amplitud.at(i).posI + 1][amplitud.at(i).posJ] != 1){
+                if(mapa[amplitud.at(i).posI + 1][amplitud.at(i).posJ] == 3){
+                    Nodo nodoArriba(amplitud.at(i).posI + 1, amplitud.at(i).posJ, amplitud.at(i).municion - 1, &amplitud.at(i), amplitud.at(i).profundidad + 1, amplitud.at(i).costo + 1, "Abajo");
+                    amplitud.push_back(nodoArriba);
+                }else{
+                    Nodo nodoArriba(amplitud.at(i).posI + 1, amplitud.at(i).posJ, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, amplitud.at(i).costo + 1, "Abajo");
+                    amplitud.push_back(nodoArriba);
+                }
+            }
+
+            if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ - 1] != 1){
+                if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ - 1] == 3){
+                    Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ - 1, amplitud.at(i).municion - 1, &amplitud.at(i), amplitud.at(i).profundidad + 1, amplitud.at(i).costo + 1, "Izquierda");
+                    amplitud.push_back(nodoArriba);
+                }else{
+                    Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ - 1, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, amplitud.at(i).costo + 1, "Izquierda");
+                    amplitud.push_back(nodoArriba);
+                }
+            }
+
+            if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ + 1] != 1){
+                if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ + 1] == 3){
+                    Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ + 1, amplitud.at(i).municion - 1, &amplitud.at(i), amplitud.at(i).profundidad + 1, amplitud.at(i).costo + 1, "Derecha");
+                    amplitud.push_back(nodoArriba);
+                }else{
+                    Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ + 1, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, amplitud.at(i).costo + 1, "Derecha");
+                    amplitud.push_back(nodoArriba);
+                }
+            }
+        }else{
+            if(mapa[amplitud.at(i).posI - 1][amplitud.at(i).posJ] != 1){
+                if(mapa[amplitud.at(i).posI - 1][amplitud.at(i).posJ] == 3){
+                    Nodo nodoArriba(amplitud.at(i).posI - 1, amplitud.at(i).posJ, amplitud.at(i).municion - 1, &amplitud.at(i), amplitud.at(i).profundidad + 1, amplitud.at(i).costo + 5, "Arriba");
+                    amplitud.push_back(nodoArriba);
+                }else{
+                    Nodo nodoArriba(amplitud.at(i).posI - 1, amplitud.at(i).posJ, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, amplitud.at(i).costo + 1, "Arriba");
+                    amplitud.push_back(nodoArriba);
+                }
+            }
+
+            if(mapa[amplitud.at(i).posI + 1][amplitud.at(i).posJ] != 1){
+                if(mapa[amplitud.at(i).posI + 1][amplitud.at(i).posJ] == 3){
+                    Nodo nodoArriba(amplitud.at(i).posI + 1, amplitud.at(i).posJ, amplitud.at(i).municion - 1, &amplitud.at(i), amplitud.at(i).profundidad + 1, amplitud.at(i).costo + 5, "Abajo");
+                    amplitud.push_back(nodoArriba);
+                }else{
+                    Nodo nodoArriba(amplitud.at(i).posI + 1, amplitud.at(i).posJ, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, amplitud.at(i).costo + 1, "Abajo");
+                    amplitud.push_back(nodoArriba);
+                }
+            }
+
+            if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ - 1] != 1){
+                if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ - 1] == 3){
+                    Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ - 1, amplitud.at(i).municion - 1, &amplitud.at(i), amplitud.at(i).profundidad + 1, amplitud.at(i).costo + 5, "Izquierda");
+                    amplitud.push_back(nodoArriba);
+                }else{
+                    Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ - 1, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, amplitud.at(i).costo + 1, "Izquierda");
+                    amplitud.push_back(nodoArriba);
+                }
+            }
+
+            if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ + 1] != 1){
+                if(mapa[amplitud.at(i).posI][amplitud.at(i).posJ + 1] == 3){
+                    Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ + 1, amplitud.at(i).municion - 1, &amplitud.at(i), amplitud.at(i).profundidad + 1, amplitud.at(i).costo + 5, "Derecha");
+                    amplitud.push_back(nodoArriba);
+                }else{
+                    Nodo nodoArriba(amplitud.at(i).posI, amplitud.at(i).posJ + 1, amplitud.at(i).municion, &amplitud.at(i), amplitud.at(i).profundidad + 1, amplitud.at(i).costo + 1, "Derecha");
+                    amplitud.push_back(nodoArriba);
+                }
+            }
+        }
+
+        //amplitud.erase(amplitud.begin() + i);
+        menor = 99999999;
+        amplitud.at(i).expandido = true;
+        for(int j = 0; j < amplitud.size(); j++){
+            if(amplitud.at(j).expandido == false){
+                if((amplitud.at(j).costo + matrixManhattam[amplitud.at(j).posI][amplitud.at(j).posJ]) < menor){
+                    menor = amplitud.at(j).costo + matrixManhattam[amplitud.at(j).posI][amplitud.at(j).posJ];
+                    i = j;
+
+                }
+            }
+        }
+
+    }
+    cout<<i<<" "<<amplitud.at(i).posI<<" "<<amplitud.at(i).posJ<<" "<<amplitud.at(i).profundidad<<endl;
+
+    Nodo solucion = amplitud.at(i);
+    Nodo * padres = solucion.padre;
+    while(padres->padre != NULL){
+        cout << padres->posI << "\t" << padres->posJ << endl;
+        if(padres->padre != NULL){
+            padres = padres->padre;
+        }else{
+            cout << padres->posI << "\t" << padres->posJ << endl;
+        }
+    }
+    cout << padres->posI << "\t" << padres->posJ << endl;
+}
 
 bool Nodo::yaVisitado(Nodo nodo){
     Nodo unNodo = nodo;

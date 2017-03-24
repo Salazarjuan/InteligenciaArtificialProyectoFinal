@@ -117,16 +117,16 @@ void Mapa::on_buscarSolucion_btn_clicked()
         nodo->expandirPorPreferenteProfundidadCD(posI, posJ, municion, mapa);
         break;
     case 6:
-        cout<<"Buen intento"<<"A* SD"<<endl;
+        cout<<"Buen intento"<<"Avara SD"<<endl;
+        nodo->expandirPorBusquedaAvaraSD(posI, posJ, municion, mapa);
         break;
     case 7:
-        cout<<"Buen intento"<<"A* CD"<<endl;
+        cout<<"Buen intento"<<"A* SD"<<endl;
+        nodo->expandirPorAEstrellaSD(posI, posJ, municion, mapa);
         break;
     case 8:
-        cout<<"Buen intento"<<"Avara SD"<<endl;
-        break;
-    case 9:
-        cout<<"Buen intento"<<"Avara CD"<<endl;
+        cout<<"Buen intento"<<"A* CD"<<endl;
+        nodo->expandirPorAEstrellaCD(posI, posJ, municion, mapa);
         break;
     }
 

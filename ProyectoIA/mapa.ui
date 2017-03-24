@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1207</width>
+    <width>1245</width>
     <height>786</height>
    </rect>
   </property>
@@ -37,7 +37,7 @@
      <rect>
       <x>1020</x>
       <y>-1</y>
-      <width>181</width>
+      <width>215</width>
       <height>251</height>
      </rect>
     </property>
@@ -86,22 +86,17 @@
        </item>
        <item>
         <property name="text">
+         <string>Búsqueda Ávara CD</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
          <string>A* SD</string>
         </property>
        </item>
        <item>
         <property name="text">
          <string>A* CD</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Búsqueda Ávara SD</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Búsqueda Ávara CD</string>
         </property>
        </item>
       </widget>
@@ -121,8 +116,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1207</width>
-     <height>21</height>
+     <width>1245</width>
+     <height>19</height>
     </rect>
    </property>
   </widget>
