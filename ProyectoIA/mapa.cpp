@@ -7,16 +7,6 @@ Mapa::Mapa(QWidget *parent) :
     ui(new Ui::Mapa)
 {
     ui->setupUi(this);
-    for (int i = 0; i < 12; i++) {
-        QPixmap imagen("floor.jpg");
-        imagen = imagen.scaled(60,60);
-        for (int j = 0; j < 12; j++) {
-
-            QLabel * label = new QLabel();
-            label->setPixmap(imagen);
-            ui->gridLayout->addWidget(label, i, j, 0);
-        }
-    }
 
     municion = 0;
     posI = 0;
@@ -58,6 +48,38 @@ void Mapa::on_abrir_btn_clicked()
     }
 
     posicionActual();
+    srand (time(NULL));
+    int randomPlayer = randomPlayer = rand() % 3;
+
+
+    for (int i = 0; i < 12; i++) {
+        for (int j = 0; j < 12; j++) {
+            QPixmap imagen;
+            if(mapa[i][j] == 0){
+                imagen.load("floor.jpg");
+            }else if(mapa[i][j] == 1){
+                imagen.load("blocks.png");
+            }else if(mapa[i][j] == 2){
+                if(randomPlayer == 0){
+                    imagen.load("jujo.png");
+                }else if(randomPlayer == 1){
+                    imagen.load("juan_jose.png");
+                }else if(randomPlayer == 2){
+                    imagen.load("juan_david.png");
+                }
+            }else if(mapa[i][j] == 3){
+                imagen.load("parcial.png");
+            }else if(mapa[i][j] == 4){
+                imagen.load("5.png");
+            }
+
+            QLabel * label = new QLabel();
+            label->setPixmap(imagen);
+            ui->gridLayout->addWidget(label, i, j, 0);
+            ui->gridLayout->update();
+        }
+    }
+
 }
 
 void Mapa::posicionActual()
