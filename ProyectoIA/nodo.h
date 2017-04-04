@@ -5,6 +5,7 @@
 #include <iostream>
 #include <stack>
 #include <math.h>
+#include <QLabel>
 using namespace std;
 
 
@@ -31,16 +32,14 @@ public:
     bool esMeta(int valorCasilla);
     bool esMeta(int pos, int mapa[12][12]);
 
-    void expandirPorAmplitudSD(int posI, int posJ, int municion, int mapa[12][12]);
-    void expandirPorAmplitudCD(int posI, int posJ, int municion, int mapa[12][12]);
-    void expandirPorCostoUniformeSD(int posI, int posJ, int municion, int mapa[12][12]);
-    void expandirPorCostoUniformeCD(int posI, int posJ, int municion, int mapa[12][12]);
-    void expandirPorPreferenteProfundidadSD(int posI, int posJ, int municion, int mapa[12][12]);
-    void expandirPorPreferenteProfundidadCD(int posI, int posJ, int municion, int mapa[12][12]);
-    void expandirPorBusquedaAvaraSD(int posI, int posJ, int municion, int mapa[12][12]);
-    void expandirPorAEstrellaSD(int posI, int posJ, int municion, int mapa[12][12]);
-    void expandirPorAEstrellaCD(int posI, int posJ, int municion, int mapa[12][12]);
-
+    std::vector<int> expandirPorAmplitudSD(int posI, int posJ, int municion, int mapa[12][12], QLabel *profundidad, QLabel *nodosExpandidos);
+    std::vector<int> expandirPorAmplitudCD(int posI, int posJ, int municion, int mapa[12][12]);
+    std::vector<int> expandirPorCostoUniformeSD(int posI, int posJ, int municion, int mapa[12][12], QLabel *profundidad, QLabel *nodosExpandidos);
+    std::vector<int> expandirPorCostoUniformeCD(int posI, int posJ, int municion, int mapa[12][12]);
+    std::vector<int> expandirPorPreferenteProfundidadCC(int posI, int posJ, int municion, int mapa[12][12]);
+    std::vector<int> expandirPorPreferenteProfundidadSC(int posI, int posJ, int municion, int mapa[12][12], QLabel *profundidad, QLabel *nodosExpandidos);
+    std::vector<int> expandirPorBusquedaAvaraSD(int posI, int posJ, int municion, int mapa[12][12], QLabel *profundidad, QLabel *nodosExpandidos);
+    std::vector<int> expandirPorAEstrellaSD(int posI, int posJ, int municion, int mapa[12][12], QLabel *profundidad, QLabel *nodosExpandidos);
 
     bool yaVisitado(Nodo nodo);
 

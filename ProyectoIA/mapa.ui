@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1024</width>
-    <height>786</height>
+    <width>1008</width>
+    <height>779</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,14 +19,11 @@
      <rect>
       <x>10</x>
       <y>0</y>
-      <width>791</width>
-      <height>731</height>
+      <width>741</width>
+      <height>711</height>
      </rect>
     </property>
-    <layout class="QGridLayout" name="gridLayout">
-     <property name="sizeConstraint">
-      <enum>QLayout::SetFixedSize</enum>
-     </property>
+    <layout class="QGridLayout" name="gridLayout" rowminimumheight="0">
      <property name="spacing">
       <number>0</number>
      </property>
@@ -35,15 +32,15 @@
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>800</x>
-      <y>0</y>
+      <x>780</x>
+      <y>10</y>
       <width>215</width>
-      <height>251</height>
+      <height>701</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
      <property name="spacing">
-      <number>6</number>
+      <number>0</number>
      </property>
      <item>
       <widget class="QPushButton" name="abrir_btn">
@@ -53,52 +50,69 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="busquedas_cb">
-       <item>
-        <property name="text">
-         <string>Preferente por amplitud SD</string>
+      <widget class="QGroupBox" name="groupBox">
+       <property name="title">
+        <string>Búsquedas</string>
+       </property>
+       <widget class="QWidget" name="verticalLayoutWidget_2">
+        <property name="geometry">
+         <rect>
+          <x>9</x>
+          <y>9</y>
+          <width>201</width>
+          <height>141</height>
+         </rect>
         </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Preferente por amplitud CD</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Preferente por costo SD</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Preferente por costo CD</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Preferente por profundidad CC</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Preferente por profundidad SC</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Búsqueda Ávara CD</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>A* SD</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>A* CD</string>
-        </property>
-       </item>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="QRadioButton" name="informada">
+           <property name="text">
+            <string>Búsqueda Informada</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="informada_cb">
+           <item>
+            <property name="text">
+             <string>Ávara</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>A*</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="no_informada">
+           <property name="text">
+            <string>Búsqueda No Informada</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="no_informada_cb">
+           <item>
+            <property name="text">
+             <string>Preferente por Amplitud</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Costo Uniforme</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Peferente por Profundidad (SC)</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </widget>
      </item>
      <item>
@@ -108,15 +122,46 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QPushButton" name="pushButton">
+       <property name="text">
+        <string>Reiniciar Mapa</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="profundidad">
+       <property name="text">
+        <string>Profundidad:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="nodos_expandidos">
+       <property name="text">
+        <string>Nodos expandidos:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="tiempo_ejecucion">
+       <property name="text">
+        <string>Tiempo:</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </widget>
+   <zorder>gridLayoutWidget</zorder>
+   <zorder>verticalLayoutWidget</zorder>
+   <zorder>groupBox</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1024</width>
+     <width>1008</width>
      <height>21</height>
     </rect>
    </property>
