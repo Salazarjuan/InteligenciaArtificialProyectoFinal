@@ -1,3 +1,10 @@
+/* PROYECTO IA: Busquedas
+ * Integrantes:
+ *  Juan David Suaza Cruz 1427841
+ *  Juan Jose Salazar Salcedo 1428096
+ *  Juan Jose Varela Valencia 1424388
+ */
+
 #include "mapa.h"
 #include <QApplication>
 

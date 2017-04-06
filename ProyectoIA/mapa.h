@@ -15,9 +15,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <time.h>
-#include <unistd.h>
 #include <sys/time.h>
-
 using namespace std;
 
 namespace Ui {
@@ -56,7 +54,6 @@ private:
     int randomPlayer;
     QLabel * labels[12][12];
     double tiempo;
-
     double performancecounter_diff(LARGE_INTEGER *a, LARGE_INTEGER *b){
         LARGE_INTEGER freq;
         QueryPerformanceFrequency(&freq);

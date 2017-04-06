@@ -209,10 +209,9 @@ void Mapa::pintarRuta(){
     }else if(randomPlayer == 2){
         imagen.load("juan_david.png");
    }
-
+    int k = 0;
     for (int i = 1; i < rutaSolucion.size()/2; i++) {
         labels[rutaPosI[i]][rutaPosJ[i]]->setPixmap(imagen);
-        ui->gridLayout->update();
         if(mapa[rutaPosI[i-1]][rutaPosJ[i-1]] == 0 || mapa[rutaPosI[i-1]][rutaPosJ[i-1]] == 2){
             labels[rutaPosI[i-1]][rutaPosJ[i-1]]->setPixmap(imagenPasto);
         }else{
@@ -220,7 +219,7 @@ void Mapa::pintarRuta(){
         }
         ui->gridLayout->update();
         this->repaint();
-        usleep(300000);
+        for(k = 0; k <30000000;k++);
 
     }
 
